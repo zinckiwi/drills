@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Basic Maths Drills</title>
+  <link href="https://fonts.googleapis.com/css?family=Days+One&display=swap" rel="stylesheet">
+  <script src='https://unpkg.com/vue'></script>
+
+  <style>
+    body { font-family: 'Days One', cursive; line-height: 1; }
+    input { font-family: 'Days One', cursive; }
+
+    #app { display: flex; height: 100vh; flex-direction: column; justify-content: center; align-items: center; }
+
+    .question { font-size: 8rem; color: #69c; }
+    input { font-size: 8rem; color: #999; width: 3em; text-align: center; border: none; border-bottom: 5px solid #ccc; outline: none; line-height: 1; padding: 0 0 0.1em 0; }
+    input.correct { color: #390; }
+  </style>
+</head>
+<body>
+  <div id='app'>
+    <div class='question'>{{a}} × {{b}}</div>
+    <input type='text' autofocus ref='answer' v-model.trim='answer' @input='check' v-bind:disabled='thinking' v-bind:class='{correct: thinking}' @keypress='isNumber($event)' />
+  </div>
+
+  <script>
+    var TIMES_TABLES_NUMBERS = [1,2,3,4,5,6,7,8,9,10,11,12]
+
+    function rand(arr) { return arr[Math.floor(Math.random() * arr.length)] }
+
+    var app = new Vue({
+      el: '#app',
+      data: {
+        a: rand(TIMES_TABLES_NUMBERS),
+        b: rand(TIMES_TABLES_NUMBERS),
+        answer: '',
+        thinking: false,
+      },
+      methods: {
+        check: function() {
+          if ((this.a * this.b).toString() === this.answer) {
+            this.thinking = true
+            setTimeout((function() {
+              this.a = rand(TIMES_TABLES_NUMBERS)
+              this.b = rand(TIMES_TABLES_NUMBERS)
+              this.answer = ''
+              this.thinking = false
+
+              setTimeout((function() {
+                this.$refs.answer.focus()
+              }).bind(this))
+            }).bind(this), 750)
+          }
+        }
+      }
+    })
+  </script>
+</body>
+</html>
