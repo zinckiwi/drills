@@ -1,14 +1,14 @@
-import React, { Fragment, PropsWithChildren } from 'react'
+import React, { Fragment, PropsWithChildren, useEffect } from 'react'
 import cx from 'classnames'
 import { State, useHookstate } from '@hookstate/core'
-// import { localstored } from '@hookstate/localstored'
+import { subscribable } from '@hookstate/subscribable'
 
-import globalState from '../state'
-
-// type Drawer = 'add' | 'subtract' | 'multiply' | 'divide'
+import globalState, { saveState } from '../state'
 
 const Settings: React.FunctionComponent = () => {
-  const state = useHookstate(globalState)
+  const state = useHookstate(() => globalState, subscribable())
+
+  useEffect(() => state.subscribe(saveState), [])
 
   const addState = state.settings.add
   const subtractState = state.settings.subtract
