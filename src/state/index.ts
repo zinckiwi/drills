@@ -1,4 +1,5 @@
 import { State, hookstate } from '@hookstate/core'
+import { subscribable } from '@hookstate/subscribable'
 
 export type AdditiveSettings = {
   enabled: boolean
@@ -37,7 +38,11 @@ export type GlobalState = {
   }
 }
 
-export default loadState()
+const globalState = hookstate(loadState(), subscribable())
+
+globalState.subscribe(saveState)
+
+export default globalState
 
 export function saveState(state: GlobalState): void {
   localStorage.setItem('state', JSON.stringify(state))
