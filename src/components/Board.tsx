@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 
 const operations = {
   add: (a: number, b: number) => a + b,
@@ -17,6 +17,12 @@ const Board: React.FunctionComponent<{
   const [showResult, setShowResult] = useState<null | 'solved' | 'passed'>(null)
 
   const inputRef = useRef<HTMLInputElement>(null)
+
+  useEffect(() => {
+    if (inputRef.current) {
+      inputRef.current.focus()
+    }
+  }, [])
 
   return (
     <div className='w-[26rem] font-brand text-8xl leading-none text-gray-500'>
